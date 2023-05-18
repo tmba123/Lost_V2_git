@@ -58,7 +58,7 @@ export function PublisherUpdate () {
     if (!publisher.img_url || !publisher.name || !publisher.country || !publisher.state) {
       setFetchError("All fields are required")
       return
-    } else if (publisher.year < 1900 || publisher.year > new Date().getFullYear()) {
+    } else if (publisher.year < 1889 || publisher.year > new Date().getFullYear()) {
       setFetchError(`Year value must be between 1900 and ${new Date().getFullYear()}`)
       return
     }

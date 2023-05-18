@@ -14,7 +14,7 @@ export type PublisherType = {
 export type GameType = {
   id_game?: number
   id_publisher: number
-  publisher_name: string
+  publisher?: {name: string}
   img_url: string
   name: string
   genre: string
@@ -59,74 +59,154 @@ export const searchLostGames = (table: string, searchOption: string, searchText:
   //const [orderby, setOrderBy] = useState("")
   //Condição dos If´s “if (table == "publisher"){ setOrderBy("id_publisher")}”
   //não está a funcionar “orderby” fica inalterado “”
-  let orderby = ""
   const [searchAll, setSearchAll] = useState<LostContextList>([])
 
-  //console.log(state)
 
   useEffect(() => {
 
-    if (table == "publisher"){orderby = "id_publisher"}
-    if (table == "game") {orderby = "id_game"}
-    if (table == "warehouse") {orderby = "id_warehouse"}
-    if (table == "inventory") {orderby = "id_game"}
-    if (table == "movement") {orderby = "id_movement"}
+    if (table == "publisher"){
 
 
+      if ((!searchOption && !searchText) || (searchOption && !searchText)) {
 
-    if (!searchOption && !searchText) {
-
-      console.log("entrou get all")
-
-
-      const getAll = async () => {
-        const { data, error} = await supabase
-          .from(table)
-          .select("*", { count: 'exact' })
-          .order(orderby, { ascending: false })
-          .range((page - 1) * 4, page * 4)
-
-        if (error) {
-          setFetchError(error.message)
-          setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
-
+        console.log("ENTROU Publisher GET ALL")
+  
+  
+        const getAll = async () => {
+          const { data, error} = await supabase
+            .from(table)
+            .select("*")
+            .match(state ? { "state": state } : {}) //If true filter by state otherwise empty object matches all rows
+            .order("id_publisher", { ascending: false })
+            .range((page - 1) * 4, page * 4)
+  
+          if (error) {
+            setFetchError(error.message)
+            setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
+  
+          }
+          if (data) {
+            setSearchAll(data as LostContextList)
+            setFetchError("") //clear error em caso de sucesso
+  
+          }
         }
-        if (data) {
-          setSearchAll(data as LostContextList)
-          setFetchError("") //clear error em caso de sucesso
-
+        getAll()
+  
+      } else {
+        console.log("Entrou Publisher Search")
+        const getAll = async () => {
+  
+          const { data, error, count} = await supabase
+  
+            .from(table)
+            .select("*", { count: 'exact' })
+            .filter(searchOption,
+              (searchOption == "id_publisher" || searchOption == "year") ? "gte" : "ilike",
+              (searchOption == "id_publisher" || searchOption == "year") ? searchText : `%${searchText}%`)
+            .match(state ? { "state": state } : {}) //If true filter by state otherwise empty object matches all rows
+            .order("id_publisher", { ascending: false })
+            .range((page - 1) * 4, page * 4)
+  
+          if (error) {
+            setFetchError(error.message)
+            setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
+            console.log(error)
+          }
+          if (data) {
+            setSearchAll(data as LostContextList)
+            setFetchError("") //clear error em caso de sucesso
+  
+          }
         }
+        getAll()
+  
       }
-      getAll()
-
-    } else {
-      console.log("entrou search")
-      const getAll = async () => {
-
-        const { data, error} = await supabase
-
-          .from(table)
-          .select("*", { count: 'exact' })
-          .filter(searchOption,
-            (searchOption == "id_publisher" || searchOption == "year") ? "gte" : "ilike",
-            (searchOption == "id_publisher" || searchOption == "year") ? searchText : `%${searchText}%`)
-          .order(orderby, { ascending: false })
-          .range((page - 1) * 4, page * 4)
-
-        if (error) {
-          setFetchError(error.message)
-          setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
-          console.log(error)
-        }
-        if (data) {
-          setSearchAll(data as PublisherType[])
-          setFetchError("") //clear error em caso de sucesso
-
-        }
-      }
-      getAll()
 
     }
+    else if (table == "game") {
+
+      if ((!searchOption && !searchText) || (searchOption && !searchText)) {
+
+        console.log("ENTROU Games GET ALL")
+  
+  
+        const getAll = async () => {
+          const { data, error} = await supabase
+            .from('game')
+            .select(`
+            id_game,
+            id_publisher,
+            publisher (name),
+            img_url,
+            name,
+            genre,
+            platform,
+            release_year,
+            state 
+          `)
+            .match(state ? { "state": state } : {}) //If true filter by state otherwise empty object matches all rows
+            .order("id_game", { ascending: false })
+            .range((page - 1) * 4, page * 4)
+  
+          if (error) {
+            setFetchError(error.message)
+            setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
+  
+          }
+          if (data) {
+            setSearchAll(data as LostContextList)
+            setFetchError("") //clear error em caso de sucesso
+  
+          }
+        }
+        getAll()
+  
+      } else {
+        console.log("ENTROU Games Search")
+        const getAll = async () => {
+  
+          const { data, error} = await supabase
+            .from('game')
+            .select(
+            `id_game,
+             id_publisher,
+             publisher!inner(name),
+             img_url,name,
+             genre,
+             platform,
+             release_year,
+             state
+             `)
+            .filter(searchOption,
+             (searchOption == "id_publisher" || searchOption == "year" || searchOption == "id_game") ? "gte" : "ilike",
+             (searchOption == "id_publisher" || searchOption == "year" || searchOption == "id_game") ? searchText : `%${searchText}%`)
+            .match(state ? { "state": state } : {}) //If true filter by state otherwise empty object matches all rows
+            .order("id_publisher", { ascending: false })
+            .range((page - 1) * 4, page * 4)
+  
+          if (error) {
+            setFetchError(error.message)
+            setSearchAll(searchAll.splice(0, searchAll.length)) //clear array em caso de erro – ".splice" evita problemas se o array for usado como referência para outra variável, como acontece com o método array = [] que cria um novo array
+            console.log(error)
+          }
+          if (data) {
+            setSearchAll(data as LostContextList)
+            setFetchError("") //clear error em caso de sucesso
+  
+          }
+        }
+        getAll()
+  
+      }
+      
+
+    }
+  
+    //if (table == "warehouse") {orderby = "id_warehouse"}
+    //if (table == "inventory") {orderby = "id_game"}
+    //if (table == "movement") {orderby = "id_movement"}
+
 
   }, [searchOption, searchText, page])
 

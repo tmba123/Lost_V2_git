@@ -26,7 +26,10 @@ export const Publisher = () => {
     useEffect(() => {
 
         if (getData){
-            setPublisherList(getData as PublisherType[])  
+            setPublisherList(getData as PublisherType[]) 
+            //Reset to page 1 if when filtered list results <= 4 
+            if(publisherlist.length <= 4){
+              setPage(1)}
         }
 
     }, [getData]);
@@ -89,7 +92,7 @@ export const Publisher = () => {
               {publisherlist.map((publisher) =>
                 <tr key={publisher.id_publisher}>
                   <td>{publisher.id_publisher}</td>
-                  <td><img className="avatar mask mask-squircle w-12 h-12" alt="boxart" src={publisher.img_url}></img></td>
+                  <td><img className="w-14 h-14 object-contain max-w-full object-center" alt="boxart" src={publisher.img_url}></img></td>
                   <td>{publisher.name}</td>
                   <td>{publisher.country}</td>
                   <td>{publisher.year}</td>

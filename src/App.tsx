@@ -7,7 +7,8 @@ import { Home } from './pages/Home';
 import { Publisher } from './pages/Publisher';
 import { PublisherCreate } from './pages/PublisherCreate';
 import { PublisherUpdate } from './pages/PublisherUpdate';
-
+import { Games } from './pages/Games';
+import { GameCreate } from './pages/GameCreate';
 
 function App() {
 
@@ -24,7 +25,9 @@ function App() {
         <Route path='/Publisher' element={<Publisher />} />
         <Route path='/PublisherCreate' element={<PublisherCreate />} />
         <Route path='/PublisherUpdate/:id' element={<PublisherUpdate />} />
-        {/* <Route path='/Games' element={<Games />} />
+        <Route path='/Games' element={<Games />} />
+        <Route path='/GameCreate' element={<GameCreate />} />
+        {/* 
 <Route path='/Warehouse' element={<Warehouse />} />
 <Route path='/Inventory' element={<Inventory />} />
 <Route path='/Movement' element={<Movement />} />
