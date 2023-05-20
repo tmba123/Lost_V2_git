@@ -75,6 +75,26 @@ export const Publisher = () => {
                 (e.target.value.length > 0 && searchOption == "") ? setFetchError("Choose search criteria") : setSearchText(e.target.value);
               }} />
           </div>
+          <div className="flex flex-col my-0">
+            <div className="form-control w-full">
+              <label className="cursor-pointer label w-36">
+                <span className="label-text text-left font-medium dark:text-black">State Enabled</span>
+                <input type="checkbox" className="toggle toggle-primary toggle-sm"
+                  checked={state === 'enabled'}
+                  onChange={(e) => setState(e.target.checked ? 'enabled' : '')}
+                  disabled={state === 'disabled'} />
+              </label>
+            </div>
+            <div className="form-control w-full">
+              <label className="cursor-pointer label w-36">
+                <span className="label-text text-left font-medium dark:text-black">State Disabled</span>
+                <input type="checkbox" className="toggle toggle-primary toggle-sm"
+                  checked={state === 'disabled'}
+                  onChange={(e) => setState(e.target.checked ? 'disabled' : '')}
+                  disabled={state === 'enabled'} />
+              </label>
+            </div>
+          </div>
         </form>
         <ErrorAlert fetchError={fetchError} setFetchError={setFetchError} fetchSuccess={fetchSuccess} setFetchSuccess={setFetchSuccess} />
         <br />
@@ -88,26 +108,7 @@ export const Publisher = () => {
                 <th>Country</th>
                 <th>Year</th>
                 <th>State</th>
-                <th> <div className="flex flex-col my-0">
-                        <div className="form-control w-32">
-                            <label className="cursor-pointer label">
-                                <span className="label-text text-xs">Enabled</span>
-                                <input type="checkbox" className="toggle toggle-primary toggle-sm"
-                                checked={state === 'enabled'}
-                                onChange={(e) => setState(e.target.checked ? 'enabled' : '')}
-                                disabled={state === 'disabled'}/>
-                            </label>
-                          </div>
-                        <div className="form-control w-32">
-                          <label className="cursor-pointer label">
-                              <span className="label-text text-xs">Disabled</span>
-                              <input type="checkbox" className="toggle toggle-primary toggle-sm"
-                              checked={state === 'disabled'}
-                              onChange={(e) => setState(e.target.checked ? 'disabled' : '')}
-                              disabled={state === 'enabled'}/>
-                          </label>
-                       </div>
-                     </div>
+                <th>
                 </th>
               </tr>
             </thead>

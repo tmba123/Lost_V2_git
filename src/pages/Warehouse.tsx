@@ -15,9 +15,10 @@ export const Warehouse = () => {
     const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
     const [searchOption, setSearchOption] = useState("")
     const [searchText, setSearchText] = useState("")
+    const [state, setState] = useState("")
     const [page, setPage] = useState(1)
     const [warehouseslist, setWarehousesList] = useState<WarehouseType[]>([])
-    const [getData] = searchLostGames('warehouse', searchOption, searchText, "", page);
+    const [getData] = searchLostGames('warehouse', searchOption, searchText, state, page);
 
 
 
@@ -25,12 +26,15 @@ export const Warehouse = () => {
 
     useEffect(() => {
 
-        if (getData){
-            setWarehousesList(getData as WarehouseType[]) 
+        if (getData) {
+            setWarehousesList(getData as WarehouseType[])
             //Reset to page 1 if when filtered list results <= 4 
-            if(warehouseslist.length <= 4){
-              setPage(1)}
+            if (warehouseslist.length <= 4) {
+                setPage(1)
+            }
         }
+
+        console.log(state)
 
     }, [getData]);
 
@@ -38,7 +42,7 @@ export const Warehouse = () => {
     console.log(searchOption);
     console.log(searchText);
     console.log(fetchError)
-    
+
 
     return (
         <div>
@@ -67,49 +71,69 @@ export const Warehouse = () => {
                             placeholder="option value"
                             required={true}
                             onChange={(e) => {
-                                (e.target.value.length > 0 && searchOption=="") ? setFetchError("Choose search criteria"):setSearchText(e.target.value);
-                              }}/>
+                                (e.target.value.length > 0 && searchOption == "") ? setFetchError("Choose search criteria") : setSearchText(e.target.value);
+                            }} />
+                    </div>
+                    <div className="flex flex-col my-0">
+                        <div className="form-control w-full">
+                            <label className="cursor-pointer label w-36">
+                                <span className="label-text text-left font-medium dark:text-black">State Enabled</span>
+                                <input type="checkbox" className="toggle toggle-primary toggle-sm"
+                                    checked={state === 'enabled'}
+                                    onChange={(e) => setState(e.target.checked ? 'enabled' : '')}
+                                    disabled={state === 'disabled'} />
+                            </label>
+                        </div>
+                        <div className="form-control w-full">
+                            <label className="cursor-pointer label w-36">
+                                <span className="label-text text-left font-medium dark:text-black">State Disabled</span>
+                                <input type="checkbox" className="toggle toggle-primary toggle-sm"
+                                    checked={state === 'disabled'}
+                                    onChange={(e) => setState(e.target.checked ? 'disabled' : '')}
+                                    disabled={state === 'enabled'} />
+                            </label>
+                        </div>
                     </div>
                 </form>
                 <ErrorAlert fetchError={fetchError} setFetchError={setFetchError} fetchSuccess={fetchSuccess} setFetchSuccess={setFetchSuccess} />
                 <br />
                 <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Warehouse ID</th>
-                <th>Location</th>
-                <th>State</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {warehouseslist.map((warehouse) =>
-                <tr key={warehouse.id_warehouse}>
-                  <td>{warehouse.id_warehouse}</td>
-                  <td>{warehouse.location}</td>
-                  <td>{warehouse.state}</td>
-                  <td>{warehouse.id_warehouse != 1 ?
-                   (<Link className="btn btn-active btn-link" to={`/WarehouseUpdate/${warehouse.id_warehouse}`}>
-                    Edit</Link>) : null}
-                  </td>  
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <br />
-          <div className="btn-group">
+                    <table className="table table-zebra w-full">
+                        <thead>
+                            <tr>
+                                <th>Warehouse ID</th>
+                                <th>Location</th>
+                                <th>State</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {warehouseslist.map((warehouse) =>
+                                <tr key={warehouse.id_warehouse}>
+                                    <td>{warehouse.id_warehouse}</td>
+                                    <td>{warehouse.location}</td>
+                                    <td>{warehouse.state}</td>
+                                    <td>{warehouse.id_warehouse != 1 ?
+                                        (<Link className="btn btn-active btn-link" to={`/WarehouseUpdate/${warehouse.id_warehouse}`}>
+                                            Edit</Link>) : null}
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                    <br />
+                    <div className="btn-group">
                         <button className="btn btn-outline" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
                         <button className="btn btn-outline">{page}</button>
-                        <button className="btn btn-outline" onClick={() => 
+                        <button className="btn btn-outline" onClick={() =>
                             //Reset to page 1 if it's the last page avoid error "Requested range not satisfiable from supabase"
-                            (warehouseslist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button> 
+                            (warehouseslist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button>
                     </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <a className="btn btn-outline btn-primary" href="/WarehouseCreate">Create New</a>
-          </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <a className="btn btn-outline btn-primary" href="/WarehouseCreate">Create New</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  )
+    )
 }
