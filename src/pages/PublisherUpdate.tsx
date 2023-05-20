@@ -1,8 +1,7 @@
 
 import { supabase } from '../lib/supabase';
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 //Components
@@ -131,7 +130,7 @@ export function PublisherUpdate () {
             onChange={(e) => setPublisher({ ...publisher, [e.target.name]: e.target.value })} />
           <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="state">Choose State</label>
           <select className="select select-primary w-full" id="state" name='state' onChange={(e) => setPublisher({ ...publisher, [e.target.name]: e.target.value })}>
-            <option value={publisher.state}>{publisher?.state}</option>
+            <option value={publisher.state}>{publisher.state}</option>
             <optgroup label="State">
               <option value={"enabled"}>Enabled</option>
               <option value={"disabled"}>Disabled</option>

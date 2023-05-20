@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 
 
 //Components
-import { PublisherType, GameType, searchLostGames } from "../context/LostGamesContext";
+import { GameType, searchLostGames } from "../context/LostGamesContext";
 import { ErrorAlert } from '../components/Alerts';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
@@ -106,7 +106,7 @@ export const Games = () => {
                   <td>{game.platform}</td>
                   <td>{game.release_year}</td>
                   <td>{game.state}</td>
-                  <td><Link className="btn btn-active btn-link" to={`/publisherUpdate/${game.id_game}`}
+                  <td><Link className="btn btn-active btn-link" to={`/GameUpdate/${game.id_game}`}
                   >Edit</Link></td>
                 </tr>
               )}

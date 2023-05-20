@@ -9,6 +9,10 @@ import { PublisherCreate } from './pages/PublisherCreate';
 import { PublisherUpdate } from './pages/PublisherUpdate';
 import { Games } from './pages/Games';
 import { GameCreate } from './pages/GameCreate';
+import { GameUpdate } from './pages/GameUpdate';
+import { Warehouse } from './pages/Warehouse';
+import { WarehouseCreate } from './pages/WarehouseCreate';
+import { WarehouseUpdate } from './pages/WarehouseUpdate';
 
 function App() {
 
@@ -27,6 +31,10 @@ function App() {
         <Route path='/PublisherUpdate/:id' element={<PublisherUpdate />} />
         <Route path='/Games' element={<Games />} />
         <Route path='/GameCreate' element={<GameCreate />} />
+        <Route path='/GameUpdate/:id' element={<GameUpdate />} />
+        <Route path='/Warehouse' element={<Warehouse />} />
+        <Route path='/WarehouseCreate' element={<WarehouseCreate />} />
+        <Route path='/WarehouseUpdate/:id' element={<WarehouseUpdate />} />
         {/* 
 <Route path='/Warehouse' element={<Warehouse />} />
 <Route path='/Inventory' element={<Inventory />} />

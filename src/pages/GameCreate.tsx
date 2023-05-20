@@ -13,8 +13,9 @@ export function GameCreate() {
 
   const navigate = useNavigate()
   const { setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
+  const [searchText, setSearchText] = useState("")
   const [publisherlist, setPublisherList] = useState<PublisherType[]>([])
-  const [getData] = searchLostGames('publisher', "", "", "enabled", 1);
+  const [getData] = searchLostGames('publisher', "name", searchText, "enabled", 0);
   const [game, setGame] = useState<GameType>({
     id_publisher:0,
     img_url: './src/lib/img/default.png',
@@ -94,24 +95,25 @@ export function GameCreate() {
       {/* <form id="form1" onSubmit={() => window.confirm("Confirm create Publisher") && handleSunmit} className="flex flex-col gap-4"> */}
         <div className="form-control">
 
-
+   
+          
+            <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="searchtext">Publisher Name</label>
+            <input className="input input-bordered input-primary w-full"
+            type="text"
+            placeholder="Search.."
+            id="searchtext"
+            name="searchtext"
+            onChange={(e) => {setSearchText(e.target.value);}}/>
             
-            <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="img-url">Publisher Name</label>
             <select className="select select-primary w-full" id="id_publisher" name='id_publisher' required={true} onChange={(e) => setGame({ ...game, [e.target.name]: e.target.value })}>
+            
             <option value={""}>Choose Publisher</option>
             <optgroup label="Publisher">
             {publisherlist.map((publisher) =>
-                <option value={publisher.id_publisher}>{publisher.name}</option>
+                <option key={publisher.id_publisher} value={publisher.id_publisher}>{publisher.name}</option>
             )}
             </optgroup>
             </select>
-            
-
-
-
-
-
-
 
           <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="img-url">Box Art</label>
           <input className="input input-bordered input-primary w-full"
