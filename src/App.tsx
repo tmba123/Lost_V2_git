@@ -13,6 +13,7 @@ import { GameUpdate } from './pages/GameUpdate';
 import { Warehouse } from './pages/Warehouse';
 import { WarehouseCreate } from './pages/WarehouseCreate';
 import { WarehouseUpdate } from './pages/WarehouseUpdate';
+import { Inventory } from './pages/Inventory';
 
 function App() {
 
@@ -35,9 +36,9 @@ function App() {
         <Route path='/Warehouse' element={<Warehouse />} />
         <Route path='/WarehouseCreate' element={<WarehouseCreate />} />
         <Route path='/WarehouseUpdate/:id' element={<WarehouseUpdate />} />
+        <Route path='/Inventory' element={<Inventory />} />
         {/* 
 <Route path='/Warehouse' element={<Warehouse />} />
-<Route path='/Inventory' element={<Inventory />} />
 <Route path='/Movement' element={<Movement />} />
 <Route path='/About' element={<About />} />
 

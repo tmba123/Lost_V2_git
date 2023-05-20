@@ -5,7 +5,8 @@ import { AppContext } from '../context/AppContext';
 
 
 //Components
-import { PublisherType, GameType, searchLostGames } from "../context/LostGamesContext";
+import { PublisherType, GameType} from "../context/LostGamesContext";
+import { searchPublishers } from "../context/PublisherSearch";
 import { ErrorAlert } from '../components/Alerts';
 
 
@@ -16,7 +17,7 @@ export function GameUpdate() {
     const { setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
     const [searchText, setSearchText] = useState("")
     const [publisherlist, setPublisherList] = useState<PublisherType[]>([])
-    const [getData] = searchLostGames('publisher', "name", searchText, "enabled", 0);
+    const [getData] = searchPublishers("name", searchText, "enabled", 0);
     const [game, setGame] = useState<GameType>({
         id_game: parseInt(id!),
         id_publisher: 0,

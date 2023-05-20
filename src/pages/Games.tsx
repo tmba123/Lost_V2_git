@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 
 
 //Components
-import { GameType, searchLostGames } from "../context/LostGamesContext";
+import { GameType } from "../context/LostGamesContext";
+import { searchGames } from "../context/GameSearch";
 import { ErrorAlert } from '../components/Alerts';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
@@ -18,7 +19,7 @@ export const Games = () => {
   const [state, setState] = useState("")
   const [page, setPage] = useState(1)
   const [gameslist, setGamesList] = useState<GameType[]>([])
-  const [getData] = searchLostGames('game', searchOption, searchText, state, page);
+  const [getData] = searchGames(searchOption, searchText, state, page);
 
 
 

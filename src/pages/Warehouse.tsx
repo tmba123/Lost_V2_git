@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 
 
 //Components
-import { WarehouseType, searchLostGames } from "../context/LostGamesContext";
+import { WarehouseType } from "../context/LostGamesContext";
+import { searchWarehouse } from "../context/WarehouseSearch";
 import { ErrorAlert } from '../components/Alerts';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
@@ -18,7 +19,7 @@ export const Warehouse = () => {
     const [state, setState] = useState("")
     const [page, setPage] = useState(1)
     const [warehouseslist, setWarehousesList] = useState<WarehouseType[]>([])
-    const [getData] = searchLostGames('warehouse', searchOption, searchText, state, page);
+    const [getData] = searchWarehouse(searchOption, searchText, state, page);
 
 
 

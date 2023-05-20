@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 
 
 //Components
-import { PublisherType, searchLostGames } from "../context/LostGamesContext";
+import { PublisherType } from "../context/LostGamesContext";
+import { searchPublishers } from "../context/PublisherSearch";
 import { ErrorAlert } from '../components/Alerts';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
@@ -18,7 +19,7 @@ export const Publisher = () => {
   const [state, setState] = useState("")
   const [page, setPage] = useState(1)
   const [publisherlist, setPublisherList] = useState<PublisherType[]>([])
-  const [getData] = searchLostGames('publisher', searchOption, searchText, state, page);
+  const [getData] = searchPublishers(searchOption, searchText, state, page);
 
 
 
