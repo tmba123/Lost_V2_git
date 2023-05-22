@@ -5,7 +5,7 @@ import { LostContextList } from "./LostGamesContext";
 
 
 
-export const searchInventory = (searchGame: string, searchWarehouse: string, page: number) => {
+export const searchMovements = (searchGame: string, searchWarehouse: string, searchMovementType: string, page: number) => {
 
     const { setFetchError } = useContext(AppContext);
     const [searchAll, setSearchAll] = useState<LostContextList>([])
@@ -13,24 +13,27 @@ export const searchInventory = (searchGame: string, searchWarehouse: string, pag
   
     useEffect(() => {
 
-        if (!searchGame && !searchWarehouse) {
+        if (!searchGame && !searchWarehouse && !searchMovementType) {
 
-            console.log("ENTROU Inventory GET ALL")
+            console.log("ENTROU Movements GET ALL")
     
             const getAll = async () => {
     
     
               let query = supabase
     
-                .from('inventory')
+                .from('movement')
                 .select(`
+                    id_movement,
                     id_game,
-                    game (name, img_url),
+                    game (name),
                     id_warehouse,
                     warehouse (location),
-                    quantity
+                    movement_type,
+                    quantity,
+                    movement_date
                     `)
-                .order("id_game", { ascending: false })
+                .order("id_movement", { ascending: false })
     
               if (page != 0) {
                 query = query.range((page - 1) * 4, page * 4);
@@ -54,22 +57,27 @@ export const searchInventory = (searchGame: string, searchWarehouse: string, pag
             getAll()
     
           } else {
-            console.log("ENTROU Inventory Search")
+            console.log("ENTROU Movements Search")
             const getAll = async () => {
     
               let query = supabase
     
-                .from('inventory')
+                .from('movement')
                 .select(`
+                    id_movement,
                     id_game,
-                    game!inner (name, img_url),
+                    game (name),
                     id_warehouse,
-                    warehouse!inner (location),
-                    quantity
+                    warehouse (location),
+                    movement_type,
+                    quantity,
+                    movement_date
                     `)
-                .match(searchGame ? { "id_game": searchGame } : {}) //If true filter by state otherwise empty object matches all rows
-                .match(searchWarehouse ? { "id_warehouse": searchWarehouse } : {}) //If true filter by state otherwise empty object matches all rows
-                .order("id_game", { ascending: false })
+                    .match(searchGame ? { "id_game": searchGame } : {}) //If true filter by state otherwise empty object matches all rows
+                    .match(searchWarehouse ? { "id_warehouse": searchWarehouse } : {}) //If true filter by state otherwise empty object matches all rows
+                    .match(searchMovementType ? { "movement_type": searchMovementType } : {}) //If true filter by state otherwise empty object matches all rows
+               
+                    .order("id_movement", { ascending: false })
     
               if (page != 0) {
                 query = query.range((page - 1) * 4, page * 4);
@@ -94,7 +102,7 @@ export const searchInventory = (searchGame: string, searchWarehouse: string, pag
           }
     
     
-      }, [searchGame, searchWarehouse, page])
+      }, [searchGame, searchWarehouse, searchMovementType, page])
     
       return [searchAll]
     }

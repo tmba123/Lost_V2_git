@@ -12,6 +12,7 @@ import { ErrorAlert } from '../components/Alerts';
 
 export function GameUpdate() {
 
+    const [defaultstate, setDefaultState] = useState("")
     const { id } = useParams();
     const navigate = useNavigate()
     const { setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
@@ -30,17 +31,11 @@ export function GameUpdate() {
         state: ''
     });
 
-    console.log(game)
-
     useEffect(() => {
 
         if (getData) {
             setPublisherList(getData as PublisherType[])
         }
-
-    }, [getData]);
-
-    useEffect(() => {
 
         const getGame = async () => {
             const { data, error } = await supabase
@@ -65,27 +60,39 @@ export function GameUpdate() {
             }
             if (data) {
 
-                setGame({
-                    id_game: parseInt(id!),
-                    id_publisher: data.id_publisher,
-                    publisher: { name: data.publisher?.name },
-                    img_url: data.img_url,
-                    name: data.name,
-                    genre: data.genre,
-                    platform: data.platform,
-                    release_year: data.release_year,
-                    state: data.state
-                } as GameType)
+                setDefaultState(data.state)
+                console.log("apos inicio" + defaultstate)
+                // setGame({
+                //     id_game: parseInt(id!),
+                //     id_publisher: data.id_publisher,
+                //     publisher: { name: data.publisher?.name },
+                //     img_url: data.img_url,
+                //     name: data.name,
+                //     genre: data.genre,
+                //     platform: data.platform,
+                //     release_year: data.release_year,
+                //     state: data.state
+                // } as GameType)
+            
+            setGame(data as GameType)
+            
+            
             }
         }
         getGame()
-        
-    }, [id, navigate]);
 
-    console.log(game)
+        console.log(game)
+        
+    }, [id, getData, navigate]);
+
+    
     //window.confirm("Confirm create Publisher"
     const handleSunmit = async (e: any) => {
         e.preventDefault()
+
+        
+            console.log("batatas" + defaultstate)
+            console.log("cebolas" + game.state)
 
         if (game.id_publisher == 0 || !game.img_url || !game.name || !game.genre || !game.platform || !game.state) {
             setFetchError("All fields are required")
@@ -93,6 +100,33 @@ export function GameUpdate() {
         } else if (game.release_year < 1889 || game.release_year > new Date().getFullYear()) {
             setFetchError(`Year value must be between 1900 and ${new Date().getFullYear()}`)
             return
+        }
+        else if (defaultstate == "enabled" && game.state == "disabled"){
+
+            console.log("entrou no disabel check!!!")
+            
+
+            const getInventory = async () => {
+                const { data, error } = await supabase
+                    .from('inventory')
+                    .select("*")                 
+                    .eq('id_game', id)
+                    .limit(1) //Solves error JSON object requested, multiple (or no) rows returned
+                    .single()
+    
+                if (error) {
+                    setFetchError(error.message)
+                    navigate('/Games', { replace: true }) //replace: true, the navigation will replace the current entry in the history stack instead of adding a new one.
+                }
+                if (data) {
+                    setFetchError("Game exists in Inventory! Cannot be disabled.")
+                }
+            }
+            getInventory()
+
+            return
+
+
         }
 
         const { data, error } = await supabase
@@ -120,8 +154,6 @@ export function GameUpdate() {
         }
     }
 
-
-    console.log(game)
     console.log(fetchError)
 
     return (

@@ -38,10 +38,11 @@ export type InventoryType = {
 export type MovementType = {
   id_movement?: number
   id_game: number
-  game_name: string
+  game: {name: string}
   id_warehouse: number
-  warehouse_location: string
+  warehouse: {location: string}
   movement_type: string
+  quantity: number
   movement_date: Date
 }
 

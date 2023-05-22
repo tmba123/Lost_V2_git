@@ -99,14 +99,29 @@ export function GameCreate() {
    
           
             <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="searchtext">Publisher Name</label>
-            <input className="input input-bordered input-primary w-full"
+            {/* <input className="input input-bordered input-primary w-full"
             type="text"
             placeholder="Search.."
             id="searchtext"
             name="searchtext"
-            onChange={(e) => {setSearchText(e.target.value);}}/>
+            onChange={(e) => {setSearchText(e.target.value);}}/> */}
+
+            <input className="input input-bordered input-primary w-full"
+            list="publisher"
+            id="datalist1"
+            name="id_publisher"
+            placeholder="Search Publisher"
+            //Publisher name is unique if it finds name == value sets game id_publisher, setSearchText to filter publisherlist
+            onChange={(e) => { setGame({ ...game, [e.target.name]: publisherlist.find((publisher) => publisher.name == e.target.value)?.id_publisher });setSearchText(e.target.value)}} />
+
+            <datalist id="publisher">
+            {publisherlist.map((publisher) =>
+              <option key={publisher.id_publisher}>{publisher.name}</option>
+            )}
+           </datalist>
+
             
-            <select className="select select-primary w-full" id="id_publisher" name='id_publisher' required={true} onChange={(e) => setGame({ ...game, [e.target.name]: e.target.value })}>
+            {/* <select className="select select-primary w-full" id="id_publisher" name='id_publisher' required={true} onChange={(e) => setGame({ ...game, [e.target.name]: e.target.value })}>
             
             <option value={""}>Choose Publisher</option>
             <optgroup label="Publisher">
@@ -114,8 +129,8 @@ export function GameCreate() {
                 <option key={publisher.id_publisher} value={publisher.id_publisher}>{publisher.name}</option>
             )}
             </optgroup>
-            </select>
-
+            </select> 
+ */}
           <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="img-url">Box Art</label>
           <input className="input input-bordered input-primary w-full"
             id="img_url"

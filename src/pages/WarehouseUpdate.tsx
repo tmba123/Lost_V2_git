@@ -11,10 +11,11 @@ import { ErrorAlert } from '../components/Alerts';
 
 export function WarehouseUpdate () {
 
-  
+  const [defaultstate, setDefaultState] = useState("")
   const { id } = useParams();
-  const { setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
   const navigate = useNavigate()
+  const { setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
+  
   const [warehouse, setWarehouse] = useState<WarehouseType>({
     location:'',
     state: ''
@@ -32,6 +33,8 @@ export function WarehouseUpdate () {
         navigate('/Warehouse', { replace: true }) //replace: true, the navigation will replace the current entry in the history stack instead of adding a new one.
       }
       if (data) {
+        setDefaultState(data.state)
+
         setWarehouse({
           id_warehouse: parseInt(id!),
           location: data.location,
@@ -51,6 +54,33 @@ export function WarehouseUpdate () {
       setFetchError("All fields are required")
       return
     }
+      else if (defaultstate == "enabled" && warehouse.state == "disabled"){
+
+          console.log("entrou no disabel check!!!")
+          
+
+          const getInventory = async () => {
+              const { data, error } = await supabase
+                  .from('inventory')
+                  .select("*")                 
+                  .eq('id_warehouse', id)
+                  .limit(1) //Solves error JSON object requested, multiple (or no) rows returned
+                  .single()
+  
+              if (error) {
+                  setFetchError(error.message)
+                  navigate('/Warehouse', { replace: true }) //replace: true, the navigation will replace the current entry in the history stack instead of adding a new one.
+              }
+              if (data) {
+                  setFetchError("Warehouse contains products! Cannot be disabled.")
+              }
+          }
+          getInventory()
+
+          return
+
+
+      }
 
     const { data, error } = await supabase
       .from('warehouse')
