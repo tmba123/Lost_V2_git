@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 //Components
 import { MovementType } from "../context/LostGamesContext";
@@ -12,6 +12,7 @@ import { AppContext } from '../context/AppContext';
 
 export const Movement = () => {
 
+    const navigate = useNavigate()
     const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
     
     const [page, setPage] = useState(1)
@@ -88,7 +89,7 @@ export const Movement = () => {
                                     index === self.findIndex((t) => (
                                         t.id_game === value.id_game))
                                 ).map((game, index) =>
-                                    <option key={index} value={game.id_game}>{game.game.name}</option>
+                                    <option key={index} value={game.id_game}>{game.game?.name}</option>
                                 )}
                             </optgroup>
                         </select>
@@ -101,7 +102,7 @@ export const Movement = () => {
                                     index === self.findIndex((t) => (
                                         t.id_warehouse === value.id_warehouse))
                                 ).map((warehouse, index) =>
-                                    <option key={index} value={warehouse.id_warehouse}>{warehouse.warehouse.location}</option>
+                                    <option key={index} value={warehouse.id_warehouse}>{warehouse.warehouse?.location}</option>
                                 )}
                             </optgroup>
                         </select>
@@ -144,14 +145,15 @@ export const Movement = () => {
                                 <tr key={movement.id_movement}>
                                     <td>{movement.id_movement}</td>
                                     <td>{movement.id_game}</td>
-                                    <td>{movement.game.name}</td>
+                                    <td>{movement.game?.name}</td>
                                     <td>{movement.id_warehouse}</td>
-                                    <td>{movement.warehouse.location}</td>
+                                    <td>{movement.warehouse?.location}</td>
                                     <td>{movement.movement_type}</td>
                                     <td>{movement.quantity}</td>
-                                    <td>{new Date(movement.movement_date).toLocaleString(
-                                    undefined, {day: '2-digit', month: '2-digit', year: 'numeric',
-                                                hour: '2-digit', minute: '2-digit', hour12: false})}
+                                    <td>{movement.movement_date ? (
+                                        new Date(movement.movement_date).toLocaleString(undefined, {
+                                        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit',
+                                        minute: '2-digit', hour12: false})) : ('')}
                                     </td>
                                 </tr>
                             )}
@@ -159,14 +161,14 @@ export const Movement = () => {
                     </table>
                     <br />
                     <div className="btn-group">
-                        <button className="btn btn-outline" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
-                        <button className="btn btn-outline">{page}</button>
-                        <button className="btn btn-outline" onClick={() =>
+                        <button className="btn btn-outline btn-sm" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
+                        <button className="btn btn-outline btn-sm">{page}</button>
+                        <button className="btn btn-outline btn-sm" onClick={() =>
                             //Reset to page 1 if it's the last page avoid error "Requested range not satisfiable from supabase"
                             (movementlist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                        <a className="btn btn-outline btn-primary" href="/PublisherCreate">Create New</a>
+                        <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/MovementCreate')}>Create New</button>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 //Components
@@ -12,6 +13,7 @@ import { AppContext } from '../context/AppContext';
 
 export const Inventory = () => {
 
+    const navigate = useNavigate()
     const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
     const [searchGame, setSearchGame] = useState("")
     const [searchWarehouse, setSearchWarehouse] = useState("")
@@ -76,7 +78,7 @@ export const Inventory = () => {
                                     index === self.findIndex((t) => (
                                         t.id_game === value.id_game))
                                 ).map((game, index) =>
-                                    <option key={index} value={game.id_game}>{game.game.name}</option>
+                                    <option key={index} value={game.id_game}>{game.game?.name}</option>
                                 )}
                             </optgroup>
                         </select>
@@ -89,7 +91,7 @@ export const Inventory = () => {
                                     index === self.findIndex((t) => (
                                         t.id_warehouse === value.id_warehouse))
                                 ).map((warehouse, index) =>
-                                    <option key={index} value={warehouse.id_warehouse}>{warehouse.warehouse.location}</option>
+                                    <option key={index} value={warehouse.id_warehouse}>{warehouse.warehouse?.location}</option>
                                 )}
                             </optgroup>
                         </select>
@@ -116,10 +118,10 @@ export const Inventory = () => {
                             {inventorylist.map((inventory, index) =>
                                 <tr key={index}>
                                     <td>{inventory.id_game}</td>
-                                    <td>{inventory.game.name}</td>
-                                    <td><img className="w-14 h-14 object-contain max-w-full object-center" alt="boxart" src={inventory.game.img_url}></img></td>
+                                    <td>{inventory.game?.name}</td>
+                                    <td><img className="w-14 h-14 object-contain max-w-full object-center" alt="boxart" src={inventory.game?.img_url}></img></td>
                                     <td>{inventory.id_warehouse}</td>
-                                    <td>{inventory.warehouse.location}</td>
+                                    <td>{inventory.warehouse?.location}</td>
                                     <td>{inventory.quantity}</td>
                                 </tr>
                             )}
@@ -127,14 +129,14 @@ export const Inventory = () => {
                     </table>
                     <br />
                     <div className="btn-group">
-                        <button className="btn btn-outline" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
-                        <button className="btn btn-outline">{page}</button>
-                        <button className="btn btn-outline" onClick={() =>
+                        <button className="btn btn-outline btn-sm" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
+                        <button className="btn btn-outline btn-sm">{page}</button>
+                        <button className="btn btn-outline btn-sm" onClick={() =>
                             //Reset to page 1 if it's the last page avoid error "Requested range not satisfiable from supabase"
                             (inventorylist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                        <a className="btn btn-outline btn-primary" href="/MovementCreate">Create Movement</a>
+                        <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/MovementCreate')}>Create Movement</button>
                     </div>
                 </div>
             </div>

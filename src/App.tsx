@@ -15,40 +15,38 @@ import { WarehouseCreate } from './pages/WarehouseCreate';
 import { WarehouseUpdate } from './pages/WarehouseUpdate';
 import { Inventory } from './pages/Inventory';
 import { Movement } from './pages/Movement';
+import { MovementCreate } from './pages/MovementCreate';
+import { About } from './pages/About';
 
 function App() {
 
   return (
-<AppProvider>
-
-    
-    <>
-      <NavigationBar />
+    <AppProvider>
 
 
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/Publisher' element={<Publisher />} />
-        <Route path='/PublisherCreate' element={<PublisherCreate />} />
-        <Route path='/PublisherUpdate/:id' element={<PublisherUpdate />} />
-        <Route path='/Games' element={<Games />} />
-        <Route path='/GameCreate' element={<GameCreate />} />
-        <Route path='/GameUpdate/:id' element={<GameUpdate />} />
-        <Route path='/Warehouse' element={<Warehouse />} />
-        <Route path='/WarehouseCreate' element={<WarehouseCreate />} />
-        <Route path='/WarehouseUpdate/:id' element={<WarehouseUpdate />} />
-        <Route path='/Inventory' element={<Inventory />} />
-        <Route path='/Movement' element={<Movement />} />
-        
+      <>
+        <NavigationBar />
 
 
-{/* <Route path='/About' element={<About />} /> */}
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/Publisher' element={<Publisher />} />
+          <Route path='/PublisherCreate' element={<PublisherCreate />} />
+          <Route path='/PublisherUpdate/:id' element={<PublisherUpdate />} />
+          <Route path='/Games' element={<Games />} />
+          <Route path='/GameCreate' element={<GameCreate />} />
+          <Route path='/GameUpdate/:id' element={<GameUpdate />} />
+          <Route path='/Warehouse' element={<Warehouse />} />
+          <Route path='/WarehouseCreate' element={<WarehouseCreate />} />
+          <Route path='/WarehouseUpdate/:id' element={<WarehouseUpdate />} />
+          <Route path='/Inventory' element={<Inventory />} />
+          <Route path='/Movement' element={<Movement />} />
+          <Route path='/MovementCreate' element={<MovementCreate />} />
+          <Route path='/About' element={<About />} />
+        </Routes>
 
- 
-      </Routes>
-
-      <FooterBar />
-    </>
+        <FooterBar />
+      </>
     </AppProvider>
   )
 }

@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import { GameType } from "../context/LostGamesContext";
 import { searchGames } from "../context/GameSearch";
 import { ErrorAlert } from '../components/Alerts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 
@@ -13,6 +13,7 @@ import { AppContext } from '../context/AppContext';
 
 export const Games = () => {
 
+  const navigate = useNavigate()
   const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
   const [searchOption, setSearchOption] = useState("")
   const [searchText, setSearchText] = useState("")
@@ -138,14 +139,14 @@ export const Games = () => {
           </table>
           <br />
           <div className="btn-group">
-            <button className="btn btn-outline" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
-            <button className="btn btn-outline">{page}</button>
-            <button className="btn btn-outline" onClick={() =>
+            <button className="btn btn-outline btn-sm" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
+            <button className="btn btn-outline btn-sm">{page}</button>
+            <button className="btn btn-outline btn-sm" onClick={() =>
               //Reset to page 1 if it's the last page avoid error "Requested range not satisfiable from supabase"
               (gameslist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <a className="btn btn-outline btn-primary" href="/GameCreate">Create New</a>
+            <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/GameCreate')}>Create New</button>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ export function ErrorAlert(props: any) {
   const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
 
   useEffect(() => {
-    console.log("entrou " + "error:" + props.fetchError + "   succ:" + props.fetchSuccess)
+    //console.log("entrou " + "error:" + props.fetchError + "   succ:" + props.fetchSuccess)
   
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -19,7 +19,7 @@ export function ErrorAlert(props: any) {
       if (!event.target) return;
       setFetchError("");
       setFetchSuccess("")
-      console.log("update error test")
+      //console.log("update error test")
     };
 
     document.addEventListener('keydown', handleKeyDown);

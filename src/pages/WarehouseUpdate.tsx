@@ -137,8 +137,8 @@ export function WarehouseUpdate () {
           </select>
           <br />
           <div className="flex flex-wrap items-center gap-2">
-            <button className="btn btn-outline btn-primary" onClick={() => navigate('/Warehouse')}>Back</button>
-            <button className="btn btn-outline btn-primary" type="submit">Submit</button>
+            <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/Warehouse')}>Back</button>
+            <button className="btn btn-outline btn-primary btn-sm" type="submit">Submit</button>
           </div>
         </div>
       </form>

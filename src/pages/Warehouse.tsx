@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import { WarehouseType } from "../context/LostGamesContext";
 import { searchWarehouse } from "../context/WarehouseSearch";
 import { ErrorAlert } from '../components/Alerts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 
@@ -13,6 +13,7 @@ import { AppContext } from '../context/AppContext';
 
 export const Warehouse = () => {
 
+    const navigate = useNavigate()
     const { fetchSuccess, setFetchSuccess, fetchError, setFetchError } = useContext(AppContext);
     const [searchOption, setSearchOption] = useState("")
     const [searchText, setSearchText] = useState("")
@@ -114,7 +115,7 @@ export const Warehouse = () => {
                                     <td>{warehouse.id_warehouse}</td>
                                     <td>{warehouse.location}</td>
                                     <td>{warehouse.state}</td>
-                                    <td>{warehouse.id_warehouse != 1 ?
+                                    <td>{warehouse.location != "Transit" ?
                                         (<Link className="btn btn-active btn-link" to={`/WarehouseUpdate/${warehouse.id_warehouse}`}>
                                             Edit</Link>) : null}
                                     </td>
@@ -124,14 +125,14 @@ export const Warehouse = () => {
                     </table>
                     <br />
                     <div className="btn-group">
-                        <button className="btn btn-outline" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
-                        <button className="btn btn-outline">{page}</button>
-                        <button className="btn btn-outline" onClick={() =>
+                        <button className="btn btn-outline btn-sm" onClick={() => setPage(Math.max(page - 1, 1))}>«</button>
+                        <button className="btn btn-outline btn-sm">{page}</button>
+                        <button className="btn btn-outline btn-sm" onClick={() =>
                             //Reset to page 1 if it's the last page avoid error "Requested range not satisfiable from supabase"
                             (warehouseslist.length <= 4) ? setPage(1) : setPage(page + 1)}>»</button>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                        <a className="btn btn-outline btn-primary" href="/WarehouseCreate">Create New</a>
+                        <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/WarehouseCreate')}>Create New</button>
                     </div>
                 </div>
             </div>

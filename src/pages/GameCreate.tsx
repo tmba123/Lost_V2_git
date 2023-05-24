@@ -18,11 +18,11 @@ export function GameCreate() {
   const [publisherlist, setPublisherList] = useState<PublisherType[]>([])
   const [getData] = searchPublishers("name", searchText, "enabled", 0);
   const [game, setGame] = useState<GameType>({
-    id_publisher:0,
+    id_publisher: 0,
     img_url: './src/lib/img/default.png',
     name: '',
-    genre:'',
-    platform:'',
+    genre: '',
+    platform: '',
     release_year: 0,
     state: ''
   });
@@ -31,9 +31,9 @@ export function GameCreate() {
 
   useEffect(() => {
 
-      if (getData){
-          setPublisherList(getData as PublisherType[]) 
-      }
+    if (getData) {
+      setPublisherList(getData as PublisherType[])
+    }
 
   }, [getData]);
 
@@ -43,7 +43,7 @@ export function GameCreate() {
 
 
 
- //window.confirm("Confirm create Publisher"
+  //window.confirm("Confirm create Publisher"
   const handleSunmit = async (e: any) => {
     e.preventDefault()
 
@@ -65,7 +65,7 @@ export function GameCreate() {
         platform: game.platform,
         release_year: game.release_year,
         state: game.state
-        })
+      })
       .select() //return record (data)
 
     if (error) {
@@ -90,47 +90,26 @@ export function GameCreate() {
         Add new Game
       </h5>
       <br />
-      <ErrorAlert fetchError={fetchError} setFetchError={setFetchError}/>
+      <ErrorAlert fetchError={fetchError} setFetchError={setFetchError} />
       <br />
       <form id="form1" onSubmit={handleSunmit} className="flex flex-col gap-4">
-      {/* <form id="form1" onSubmit={() => window.confirm("Confirm create Publisher") && handleSunmit} className="flex flex-col gap-4"> */}
         <div className="form-control">
-
-   
-          
-            <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="searchtext">Publisher Name</label>
-            {/* <input className="input input-bordered input-primary w-full"
-            type="text"
-            placeholder="Search.."
-            id="searchtext"
-            name="searchtext"
-            onChange={(e) => {setSearchText(e.target.value);}}/> */}
-
-            <input className="input input-bordered input-primary w-full"
+          <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="searchtext">Publisher Name</label>
+          <input className="input input-bordered input-primary w-full"
             list="publisher"
             id="datalist1"
             name="id_publisher"
             placeholder="Search Publisher"
+            autoComplete='off'
             //Publisher name is unique if it finds name == value sets game id_publisher, setSearchText to filter publisherlist
-            onChange={(e) => { setGame({ ...game, [e.target.name]: publisherlist.find((publisher) => publisher.name == e.target.value)?.id_publisher });setSearchText(e.target.value)}} />
+            onChange={(e) => { setGame({ ...game, [e.target.name]: publisherlist.find((publisher) => publisher.name == e.target.value)?.id_publisher }); setSearchText(e.target.value) }} />
 
-            <datalist id="publisher">
+          <datalist id="publisher">
             {publisherlist.map((publisher) =>
-              <option key={publisher.id_publisher}>{publisher.name}</option>
+              <option key={publisher.id_publisher} value={publisher.name}></option>
             )}
-           </datalist>
+          </datalist>
 
-            
-            {/* <select className="select select-primary w-full" id="id_publisher" name='id_publisher' required={true} onChange={(e) => setGame({ ...game, [e.target.name]: e.target.value })}>
-            
-            <option value={""}>Choose Publisher</option>
-            <optgroup label="Publisher">
-            {publisherlist.map((publisher) =>
-                <option key={publisher.id_publisher} value={publisher.id_publisher}>{publisher.name}</option>
-            )}
-            </optgroup>
-            </select> 
- */}
           <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="img-url">Box Art</label>
           <input className="input input-bordered input-primary w-full"
             id="img_url"
@@ -176,8 +155,8 @@ export function GameCreate() {
           </select>
           <br />
           <div className="flex flex-wrap items-center gap-2">
-            <button className="btn btn-outline btn-primary" onClick={() => navigate('/Games')}>Back</button>
-            <button className="btn btn-outline btn-primary" type="submit">Submit</button>
+            <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/Games')}>Back</button>
+            <button className="btn btn-outline btn-primary btn-sm" type="submit">Submit</button>
           </div>
         </div>
       </form>

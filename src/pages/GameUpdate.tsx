@@ -5,7 +5,7 @@ import { AppContext } from '../context/AppContext';
 
 
 //Components
-import { PublisherType, GameType} from "../context/LostGamesContext";
+import { PublisherType, GameType } from "../context/LostGamesContext";
 import { searchPublishers } from "../context/PublisherSearch";
 import { ErrorAlert } from '../components/Alerts';
 
@@ -41,16 +41,16 @@ export function GameUpdate() {
             const { data, error } = await supabase
                 .from('game')
                 .select(`
-                        id_game,
-                        id_publisher,
-                        publisher (name),
-                        img_url,
-                        name,
-                        genre,
-                        platform,
-                        release_year,
-                        state 
-                        `)
+id_game,
+id_publisher,
+publisher (name),
+img_url,
+name,
+genre,
+platform,
+release_year,
+state 
+`)
                 .eq('id_game', id)
                 .single()
 
@@ -73,26 +73,26 @@ export function GameUpdate() {
                 //     release_year: data.release_year,
                 //     state: data.state
                 // } as GameType)
-            
-            setGame(data as GameType)
-            
-            
+
+                setGame(data as GameType)
+
+
             }
         }
         getGame()
 
         console.log(game)
-        
+
     }, [id, getData, navigate]);
 
-    
+
     //window.confirm("Confirm create Publisher"
     const handleSunmit = async (e: any) => {
         e.preventDefault()
 
-        
-            console.log("batatas" + defaultstate)
-            console.log("cebolas" + game.state)
+
+        console.log("batatas" + defaultstate)
+        console.log("cebolas" + game.state)
 
         if (game.id_publisher == 0 || !game.img_url || !game.name || !game.genre || !game.platform || !game.state) {
             setFetchError("All fields are required")
@@ -101,19 +101,19 @@ export function GameUpdate() {
             setFetchError(`Year value must be between 1900 and ${new Date().getFullYear()}`)
             return
         }
-        else if (defaultstate == "enabled" && game.state == "disabled"){
+        else if (defaultstate == "enabled" && game.state == "disabled") {
 
             console.log("entrou no disabel check!!!")
-            
+
 
             const getInventory = async () => {
                 const { data, error } = await supabase
                     .from('inventory')
-                    .select("*")                 
+                    .select("*")
                     .eq('id_game', id)
                     .limit(1) //Solves error JSON object requested, multiple (or no) rows returned
                     .single()
-    
+
                 if (error) {
                     setFetchError(error.message)
                     navigate('/Games', { replace: true }) //replace: true, the navigation will replace the current entry in the history stack instead of adding a new one.
@@ -166,28 +166,22 @@ export function GameUpdate() {
             <ErrorAlert fetchError={fetchError} setFetchError={setFetchError} />
             <br />
             <form id="form1" onSubmit={handleSunmit} className="flex flex-col gap-4">
-                {/* <form id="form1" onSubmit={() => window.confirm("Confirm create Publisher") && handleSunmit} className="flex flex-col gap-4"> */}
                 <div className="form-control">
-
-
-
                     <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="searchtext">Publisher Name</label>
                     <input className="input input-bordered input-primary w-full"
-                        type="text"
-                        placeholder="Search.."
-                        id="searchtext"
-                        name="searchtext"
-                        onChange={(e) => { setSearchText(e.target.value); }} />
+                        list="publisher"
+                        id="datalist1"
+                        name="id_publisher"
+                        placeholder="Search Publisher"
+                        autoComplete='off'
+                        //Publisher name is unique if it finds name == value sets game id_publisher, setSearchText to filter publisherlist
+                        onChange={(e) => { setGame({ ...game, [e.target.name]: publisherlist.find((publisher) => publisher.name == e.target.value)?.id_publisher }); setSearchText(e.target.value) }} />
 
-                    <select className="select select-primary w-full" id="id_publisher" name='id_publisher' required={true} onChange={(e) => setGame({ ...game, [e.target.name]: e.target.value })}>
-
-                        <option value={game.id_publisher}>{game.publisher?.name}</option>
-                        <optgroup label="Publisher">
-                            {publisherlist.map((publisher) =>
-                                <option key={publisher.id_publisher} value={publisher.id_publisher}>{publisher.name}</option>
-                            )}
-                        </optgroup>
-                    </select>
+                    <datalist id="publisher">
+                        {publisherlist.map((publisher) =>
+                            <option key={publisher.id_publisher} value={publisher.name}></option>
+                        )}
+                    </datalist>
 
                     <label className="label-text pb-3 pl-2 pt-3 text-left font-medium dark:text-black" htmlFor="img-url">Game ID</label>
                     <input className="input input-bordered input-primary w-full"
@@ -242,8 +236,8 @@ export function GameUpdate() {
                     </select>
                     <br />
                     <div className="flex flex-wrap items-center gap-2">
-                        <button className="btn btn-outline btn-primary" onClick={() => navigate('/Games')}>Back</button>
-                        <button className="btn btn-outline btn-primary" type="submit">Submit</button>
+                        <button className="btn btn-outline btn-primary btn-sm" onClick={() => navigate('/Games')}>Back</button>
+                        <button className="btn btn-outline btn-primary btn-sm" type="submit">Submit</button>
                     </div>
                 </div>
             </form>
