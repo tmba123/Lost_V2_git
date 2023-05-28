@@ -22,12 +22,8 @@ function App() {
 
   return (
     <AppProvider>
-
-
       <>
         <NavigationBar />
-
-
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/Publisher' element={<Publisher />} />
@@ -44,13 +40,10 @@ function App() {
           <Route path='/MovementCreate' element={<MovementCreate />} />
           <Route path='/About' element={<About />} />
         </Routes>
-
         <FooterBar />
       </>
     </AppProvider>
   )
 }
-
-
 
 export default App

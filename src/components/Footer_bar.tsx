@@ -1,6 +1,7 @@
-
 export function FooterBar() {
+  
   return (
+
     <div> {/*className="flex flex-col min-h-screen"*/}
       <br />
       <br />
@@ -14,5 +15,6 @@ export function FooterBar() {
         </div>
       </footer>
     </div>
+  
   )
 }
