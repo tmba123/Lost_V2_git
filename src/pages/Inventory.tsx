@@ -69,7 +69,7 @@ export const Inventory = () => {
                     <br />
                     <div className="flex flex-col gap-4">
                         <div>
-                            <select className="select select-primary w-full" id="searchgame" name='searchgame' value={searchGame} onChange={(e) => setSearchGame(e.target.value)}>
+                            <select aria-label="label for the select" className="select select-primary w-full" id="searchgame" name='searchgame' value={searchGame} onChange={(e) => setSearchGame(e.target.value)}>
                                 <option value={""}>Choose Game</option>
                                 <optgroup label="Games">
                                     {inventorylistGames.filter((value, index, self) => // Filters and removes duplicates (games) from list
@@ -82,7 +82,7 @@ export const Inventory = () => {
                             </select>
                         </div>
                         <div>
-                            <select className="select select-primary w-full" id="searchwarehouse" name='searchwarehouse' value={searchWarehouse} onChange={(e) => setSearchWarehouse(e.target.value)}>
+                            <select aria-label="label for the select" className="select select-primary w-full" id="searchwarehouse" name='searchwarehouse' value={searchWarehouse} onChange={(e) => setSearchWarehouse(e.target.value)}>
                                 <option value={""}>Choose Warehouse</option>
                                 <optgroup label="Warehouse">
                                     {inventorylistWarehouse.filter((value, index, self) => // Filters and removes duplicates (warehouses) from list

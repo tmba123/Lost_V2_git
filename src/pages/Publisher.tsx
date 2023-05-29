@@ -53,7 +53,7 @@ export const Publisher = () => {
           <br />
           <form className="flex flex-col gap-4">
             <div>
-              <select className="select select-primary w-full" id="searchoption" name='searchoption' value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
+              <select aria-label="label for the select" className="select select-primary w-full" id="searchoption" name='searchoption' value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
                 <option value={""}>Choose search criteria</option>
                 <optgroup label="Criteria">
                   <option value="id_publisher">Publisher Id</option>
